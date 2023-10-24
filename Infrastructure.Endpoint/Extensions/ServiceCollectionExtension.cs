@@ -1,6 +1,9 @@
-﻿using Domain.Endpoint.Interfaces.Repositories;
+﻿using Domain.Endpoint.Entities;
+using Domain.Endpoint.Interfaces.Repositories;
+using Infrastructure.Endpoint.Builders;
 using Infrastructure.Endpoint.Data;
 using Infrastructure.Endpoint.Data.Repositories;
+using Infrastructure.Endpoint.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Endpoint.Extensions
@@ -10,6 +13,7 @@ namespace Infrastructure.Endpoint.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddScoped<IToDosRepository, ToDosRepository>();
+            services.AddScoped<ISqlCommandOperationBuilder, SqlCommandOperationBuilder>();
             services.AddSingleton<ISqlDbConnection>(SqlDbConnection.GetInstance());
             return services;
         }

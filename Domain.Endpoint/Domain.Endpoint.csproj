@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Entities\AuditableEntity.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\TareasEntity.cs" />
     <Compile Include="Entities\ToDo.cs" />
     <Compile Include="Interfaces\Repositories\IToDosRepository.cs" />
     <Compile Include="Interfaces\Services\IToDosService.cs" />

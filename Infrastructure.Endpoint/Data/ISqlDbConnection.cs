@@ -11,6 +11,5 @@ namespace Infrastructure.Endpoint.Data
         void CloseConnection();
         T GetDataRowValue<T>(DataRow row, string index, T defaultValue = default);
         Task<DataTable> ExecuteQueryCommandAsync(string sql);
-        SqlDataAdapter CreateDataApdapter(string query);
     }
 }
