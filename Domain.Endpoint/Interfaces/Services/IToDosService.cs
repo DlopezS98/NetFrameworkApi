@@ -11,7 +11,7 @@ namespace Domain.Endpoint.Interfaces.Services
         Task<List<ToDo>> GetAll();
         Task<ToDo> GetByIdAsync(Guid id);
         Task<ToDo> CreateAsync(CreateToDoDto toDo);
-        Task<ToDo> UpdateAsync(Guid id, UpdateDishDto dishDto);
+        Task<ToDo> UpdateAsync(Guid id, UpdateToDoDto dishDto);
         Task<ToDo> DeleteAsync(Guid id);
     }
 }

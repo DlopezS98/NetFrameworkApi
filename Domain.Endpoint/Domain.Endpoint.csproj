@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="DataAttributes\EntityAttribute.cs" />
     <Compile Include="DataAttributes\SQL\SqlPropertyAttribute.cs" />
-    <Compile Include="DTOs\DishDto.cs" />
     <Compile Include="DTOs\ToDoDto.cs" />
     <Compile Include="Entities\AuditableEntity.cs" />
     <Compile Include="Entities\BaseEntity.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Endpoint.DTOs
+namespace Application.Endpoint.DTOs
 {
     public class CreateDishDto
     {

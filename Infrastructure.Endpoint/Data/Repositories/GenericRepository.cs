@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Endpoint.Data.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    public class GenericRepository<T> where T : BaseEntity
     {
         protected readonly ISqlCommandOperationBuilder operationBuilder;
         protected readonly ISqlDbConnection sqlDbConnection;

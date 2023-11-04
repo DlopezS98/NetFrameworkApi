@@ -9,6 +9,7 @@ using System;
 using System.Web.Http.Controllers;
 using Domain.Endpoint.Interfaces.Services;
 using Domain.Endpoint.Services;
+using Application.Endpoint.Handlers;
 
 [assembly: OwinStartup(typeof(WebApi.Startup))]
 
@@ -42,6 +43,11 @@ namespace WebApi
                     .Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition)
                     .Where(t => typeof(IHttpController).IsAssignableFrom(t) || t.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase))
             );
+
+            services.AddMediatR(configuration =>
+            {
+                configuration.RegisterServicesFromAssembly(typeof(MediatRHandlers).Assembly);
+            });
 
             services.AddScoped<IToDosService, ToDosService>();
             services.AddInfrastructureServices();
