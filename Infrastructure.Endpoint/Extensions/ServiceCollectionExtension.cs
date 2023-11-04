@@ -12,11 +12,16 @@ namespace Infrastructure.Endpoint.Extensions
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddScoped<IToDosRepository, ToDosRepository>();
             services.AddTransient<ISqlEntitySettingsBuilder, SqlEntitySettingsBuilder>();
             services.AddTransient<ISqlCommandOperationBuilder, SqlCommandOperationBuilder>();
             services.AddSingleton<IEntitiesService, EntitiesService>();
             services.AddSingleton<ISqlDbConnection>(SqlDbConnection.GetInstance());
+
+            services.AddScoped<IToDosRepository, ToDosRepository>();
+            services.AddScoped<IProductsRepository, ProductsRepository>();
+            services.AddScoped<IProductDetailsRepository, ProductDetailsRepository>();
+            services.AddScoped<IDishesRepository, DishesRepository>();
+            services.AddScoped<IInvoicesRepository, InvoicesRepository>();
             return services;
         }
     }
