@@ -61,9 +61,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CreateDishCommand.cs" />
+    <Compile Include="Commands\CreateInvoiceCommand.cs" />
     <Compile Include="Commands\UpdateDishCommand.cs" />
     <Compile Include="DTOs\DishDto.cs" />
+    <Compile Include="DTOs\InvoiceDetailDto.cs" />
+    <Compile Include="DTOs\InvoiceDto.cs" />
     <Compile Include="Handlers\Commands\CreateDishCommandHandler.cs" />
+    <Compile Include="Handlers\Commands\CreateInvoiceCommandHandler.cs" />
     <Compile Include="Handlers\Commands\UpdateDishCommandHandler.cs" />
     <Compile Include="Handlers\MediatRHandlers.cs" />
     <Compile Include="Handlers\Queries\GetAllDishesQueryHandler.cs" />
