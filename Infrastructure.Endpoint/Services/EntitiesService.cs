@@ -30,7 +30,11 @@ namespace Infrastructure.Endpoint.Services
             {
                 new SqlColumnSettings() { Name = "Id", DomainName = "Id", IsPrimaryKey = true, SqlDbType = SqlDbType.UniqueIdentifier },
                 new SqlColumnSettings() { Name = "Title", DomainName = "Title", SqlDbType = SqlDbType.NVarChar },
-                new SqlColumnSettings() { Name = "Description", DomainName = "Description", SqlDbType = SqlDbType.NVarChar }
+                new SqlColumnSettings() { Name = "Description", DomainName = "Description", SqlDbType = SqlDbType.NVarChar },
+                new SqlColumnSettings() { Name = "Done", DomainName = "Done", SqlDbType = SqlDbType.Bit },
+                new SqlColumnSettings() { Name = "StartedAt", DomainName = "StartedAt", SqlDbType = SqlDbType.DateTime, IsNullable = true },
+                new SqlColumnSettings() { Name = "CreatedAt", DomainName = "CreatedAt", SqlDbType = SqlDbType.DateTime, IsNullable = false },
+                new SqlColumnSettings() { Name = "UpdatedAt", DomainName = "UpdatedAt", SqlDbType = SqlDbType.DateTime, IsNullable = true }
             };
 
             return new SqlEntitySettings()

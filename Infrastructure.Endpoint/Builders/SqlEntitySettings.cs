@@ -20,5 +20,6 @@ namespace Infrastructure.Endpoint.Builders
         public SqlDbType SqlDbType { get; set; }
         public bool IsPrimaryKey { get; set; }
         public bool IsNullable { get; set; }
+        public bool IsComputedColumn { get; set; } = false;
     }
 }
