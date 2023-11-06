@@ -14,7 +14,7 @@ namespace Domain.Endpoint.Exceptions
         public EntityNotFoundException(Guid id, string entityName) : base($"Entity {entityName} with Id {id} Not Found!")
         {
             Id = id;
-            Data.Add("id", Id);
+            Data.Add("Id", Id);
         }
     }
 }

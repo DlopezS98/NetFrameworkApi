@@ -1,5 +1,6 @@
 ﻿using Domain.Endpoint.Exceptions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -53,7 +54,8 @@ namespace WebApi.App_Start.Handlers
                     Data = exception.Data
                 };
 
-                return new StringContent(JsonConvert.SerializeObject(response), Encoding.UTF8, "application/json");
+                var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+                return new StringContent(JsonConvert.SerializeObject(response, settings), Encoding.UTF8, "application/json");
             }
         }
     }
