@@ -1,5 +1,6 @@
 ﻿using Application.Endpoint.Commands;
 using Application.Endpoint.DTOs;
+using Application.Endpoint.Queries;
 using Domain.Endpoint.Entities;
 using MediatR;
 using System;
@@ -14,6 +15,13 @@ namespace WebApi.Controllers
         public DishesController(IMediator mediator)
         {
             this.mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> GetAll()
+        {
+            var dishes = await mediator.Send(new GetAllDishesQuery());
+            return Ok(dishes);
         }
 
         [HttpPost]
