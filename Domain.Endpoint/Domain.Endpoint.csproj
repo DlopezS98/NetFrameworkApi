@@ -53,6 +53,7 @@
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\ProductDetail.cs" />
     <Compile Include="Entities\ToDo.cs" />
+    <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Interfaces\Repositories\IDishesRepository.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
     <Compile Include="Interfaces\Repositories\IInvoicesRepository.cs" />
@@ -65,8 +66,6 @@
     <Compile Include="Services\InvoicesService.cs" />
     <Compile Include="Services\ToDosService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

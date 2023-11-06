@@ -19,12 +19,12 @@ namespace Application.Endpoint.Handlers.Commands
         public async Task<Dish> Handle(CreateDishCommand request, CancellationToken cancellationToken)
         {
             Dish dish = new Dish
-            {
+            {                            
                 Id = Guid.NewGuid(),
                 Name = request.DishDto.Name,
                 Price = request.DishDto.Price,
                 Description = request.DishDto.Description,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 CreatedBy = request.UserId
             };
             await dishesRepository.CreateAsync(dish);

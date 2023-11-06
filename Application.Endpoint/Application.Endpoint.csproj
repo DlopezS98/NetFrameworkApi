@@ -61,8 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\CreateDishCommand.cs" />
+    <Compile Include="Commands\UpdateDishCommand.cs" />
     <Compile Include="DTOs\DishDto.cs" />
     <Compile Include="Handlers\Commands\CreateDishCommandHandler.cs" />
+    <Compile Include="Handlers\Commands\UpdateDishCommandHandler.cs" />
     <Compile Include="Handlers\MediatRHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

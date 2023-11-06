@@ -3,6 +3,8 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.ExceptionHandling;
+using WebApi.App_Start.Handlers;
 
 namespace WebApi
 {
@@ -27,6 +29,7 @@ namespace WebApi
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

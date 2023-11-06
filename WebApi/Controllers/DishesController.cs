@@ -17,16 +17,29 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IHttpActionResult> CreateAsync([FromBody] CreateDishDto dishDto)
+        public async Task<IHttpActionResult> CreateAsync(CreateDishDto dishDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            //Dish dish = new Dish { Id = Guid.NewGuid() };
             Dish dish = await mediator.Send(new CreateDishCommand(dishDto, Guid.NewGuid()));
-            var url = Url.Content("~/") + "/api/dishes/" + dish.Id;
+            var url = Url.Content("~/") + "api/dishes/" + dish.Id;
             return Created(url, dish);
+        }
+
+        [HttpPut]
+        //[Route("{id}")]
+        public async Task<IHttpActionResult> UpdateAsync(Guid id, UpdateDishDto dishDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            Dish dish = await mediator.Send(new UpdateDishCommand(id, dishDto.Name, dishDto.Description, dishDto.Price, Guid.NewGuid()));
+            return Ok(dish);
         }
     }
 }
