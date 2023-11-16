@@ -82,6 +82,7 @@
     <Compile Include="Data\Interfaces\ISqlEntitySettingsBuilder.cs" />
     <Compile Include="Data\ISqlDbConnection.cs" />
     <Compile Include="Data\Repositories\DishesRepository.cs" />
+    <Compile Include="Data\Repositories\FacturaRepository.cs" />
     <Compile Include="Data\Repositories\GenericRepository.cs" />
     <Compile Include="Data\Repositories\InvoiceDetailsRepository.cs" />
     <Compile Include="Data\Repositories\InvoicesRepository.cs" />

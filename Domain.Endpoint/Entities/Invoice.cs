@@ -46,7 +46,7 @@ namespace Domain.Endpoint.Entities
             InvoiceDetails.Add(detail);
 
             Quantity++;
-            Subtotal += detail.Price;
+            Subtotal += detail.Total;
             Total = Subtotal - Discount;
         }
 

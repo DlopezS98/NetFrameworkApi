@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="DataAttributes\EntityAttribute.cs" />
     <Compile Include="DataAttributes\SQL\SqlPropertyAttribute.cs" />
+    <Compile Include="DTOs\FacturaDto.cs" />
     <Compile Include="DTOs\ToDoDto.cs" />
     <Compile Include="Entities\AuditableEntity.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Interfaces\Services\IToDosService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\Services\IInvoicesService.cs" />
+    <Compile Include="Services\FacturaService.cs" />
     <Compile Include="Services\InvoicesService.cs" />
     <Compile Include="Services\ToDosService.cs" />
   </ItemGroup>
