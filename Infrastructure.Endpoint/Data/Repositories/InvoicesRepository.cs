@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Infrastructure.Endpoint.Data.Repositories
 {
@@ -22,26 +23,17 @@ namespace Infrastructure.Endpoint.Data.Repositories
         {
             string query = "INSERT INTO [dbo].[Invoices] (,,,,) VALUES (@Id, @Quantity, ...)";
             SqlCommand facturaComando = new SqlCommand(query);
-            List<SqlParameter> parameters = new List<SqlParameter>();
+            List<SqlParameter> parameters = ObtenerFacturaParametros(invoice);
             facturaComando.Parameters.AddRange(parameters.ToArray());
-
-            //SqlCommand invoiceCommand = operationBuilder.From(entity)
-            //    .WithOperation(SqlWriteOperation.Create)
-            //    .BuildWritter();
-            //List<SqlCommand> detailCommands = entity.InvoiceDetails.Select(invoiceDetail =>
-            //{
-            //    return operationBuilder.From(invoiceDetail)
-            //     .WithOperation(SqlWriteOperation.Create)
-            //     .BuildWritter();
-            //}).ToList();
 
             StringBuilder detalleQuery = new StringBuilder("INSER INTO [dbo].[InvoiceDetails] (,,,,)");
             int counter = 0;
             List<SqlParameter> detalleParameters = new List<SqlParameter>();
-            invoice.InvoiceDetails.ToList().ForEach(detalle =>
+
+            foreach (var detalle in invoice.InvoiceDetails.ToList())
             {
                 counter++;
-                detalleQuery.Append($" VALUES (@Parameter{counter}, @Total{counter}");
+                detalleQuery.Append($" VALUES (@Quantity{counter}, @Total{counter}");
                 SqlParameter param = new SqlParameter()
                 {
                     IsNullable = false,
@@ -49,7 +41,7 @@ namespace Infrastructure.Endpoint.Data.Repositories
                     ParameterName = $"@Total{counter}",
                     Value = detalle.Total,
                 };
-                
+
                 SqlParameter param1 = new SqlParameter()
                 {
                     IsNullable = false,
@@ -60,14 +52,47 @@ namespace Infrastructure.Endpoint.Data.Repositories
 
                 detalleParameters.Add(param);
                 detalleParameters.Add(param1);
-            });
+            }
 
             SqlCommand detalleComando = new SqlCommand(detalleQuery.ToString());
             detalleComando.Parameters.AddRange(detalleParameters.ToArray());
-            List<SqlCommand> commands = new List<SqlCommand> { facturaComando };
+            SqlCommand[] sqlCommands = new SqlCommand[]
+            {
+                facturaComando,
+                detalleComando
+            };
 
-            await sqlDbConnection.RunTransactionAsync(commands.ToArray());
+            await sqlDbConnection.RunTransactionAsync(sqlCommands);
         }
+
+        private List<SqlParameter> ObtenerFacturaParametros(Invoice invoice)
+        {
+            return new List<SqlParameter>
+            {
+                new SqlParameter {
+                    ParameterName = "@Numero",
+                    SqlDbType = SqlDbType.NVarChar,
+                    Value = invoice.Number
+                },
+                new SqlParameter
+                {
+                    ParameterName = "@FechaActualizacion",
+                    SqlDbType = SqlDbType.DateTime,
+                    Value = ObtenerValor(invoice.UpdatedAt)
+                },
+                new SqlParameter
+                {
+                    ParameterName = "@ActualizadoPor",
+                    SqlDbType = SqlDbType.UniqueIdentifier,
+                    Value = ObtenerValor(invoice.UpdatedBy)
+                }
+            };
+        }
+
+        private object ObtenerValor(object valor)
+        {
+            return valor is null ? DBNull.Value : valor;
+        } 
 
         public async Task<List<Invoice>> GetAsync()
         {
