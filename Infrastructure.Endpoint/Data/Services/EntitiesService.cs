@@ -258,7 +258,7 @@ namespace Infrastructure.Endpoint.Data.Services
                    .WithSqlDbType(SqlDbType.Decimal)
                    .AddProperty();
                 entity.Property(property => property.Subtotal)
-                   .SetDefaultName()
+                   .WithName("SubTotal")
                    .WithSqlDbType(SqlDbType.Decimal)
                    .AddProperty();
                 entity.Property(property => property.Total)
@@ -323,7 +323,7 @@ namespace Infrastructure.Endpoint.Data.Services
                    .WithSqlDbType(SqlDbType.Decimal)
                    .AddProperty();
                 entity.Property(property => property.Subtotal)
-                   .SetDefaultName()
+                   .WithName("SubTotal")
                    .WithSqlDbType(SqlDbType.Decimal)
                    .AddProperty();
                 entity.Property(property => property.Total)

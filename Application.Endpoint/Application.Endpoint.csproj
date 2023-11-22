@@ -71,8 +71,10 @@
     <Compile Include="Handlers\Commands\UpdateDishCommandHandler.cs" />
     <Compile Include="Handlers\MediatRHandlers.cs" />
     <Compile Include="Handlers\Queries\GetAllDishesQueryHandler.cs" />
+    <Compile Include="Handlers\Queries\GetAllInvoicesQueryHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetAllDishesQuery.cs" />
+    <Compile Include="Queries\GetAllInvoicesQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain.Endpoint\Domain.Endpoint.csproj">

@@ -39,9 +39,20 @@ namespace Infrastructure.Endpoint.Data.Repositories
         public async Task<List<Invoice>> GetAsync()
         {
             DataTable dataTable = await GetDataTableAsync();
-            return dataTable.AsEnumerable()
-                .Select(MapEntityFromDataRow)
-                .ToList();
+            List<Invoice> invoices = dataTable.AsEnumerable().Select(MapEntityFromDataRow).ToList();
+
+            List<string> invoiceIds = invoices.Select(invoice => $"'{invoice.Id}'").ToList();
+            string query = $"SELECT * FROM InvoiceDetails WHERE InvoiceId in ({string.Join(",", invoiceIds)})";
+            SqlCommand sqlCommand = new SqlCommand(query);
+            DataTable dtDetails = await sqlDbConnection.ExecuteQueryCommandAsync(sqlCommand);
+            List<InvoiceDetail> details = dtDetails.AsEnumerable().Select(MapDetailFromDataRow).ToList();
+
+            invoices.ForEach(invoice =>
+            {
+                invoice.InvoiceDetails = details.Where(dt => dt.InvoiceId == invoice.Id).ToList();
+            });
+
+            return invoices;
         }
 
         public async Task<Invoice> GetByIdAsync(Guid id)
@@ -71,6 +82,27 @@ namespace Infrastructure.Endpoint.Data.Repositories
             };
 
             return invoice;
+        }
+
+        private InvoiceDetail MapDetailFromDataRow(DataRow row)
+        {
+            InvoiceDetail invoiceDetail = new InvoiceDetail
+            {
+                Id = sqlDbConnection.GetDataRowValue<Guid>(row, "Id"),
+                InvoiceId = sqlDbConnection.GetDataRowValue<Guid>(row, "InvoiceId"),
+                DishId = sqlDbConnection.GetDataRowValue<Guid?>(row, "DishId"),
+                ProductDetailId = sqlDbConnection.GetDataRowValue<Guid?>(row, "ProductDetailId"),
+                ItemType = sqlDbConnection.GetDataRowValue<string>(row, "ItemType"),
+                Price = sqlDbConnection.GetDataRowValue<decimal>(row, "Price"),
+                Quantity = sqlDbConnection.GetDataRowValue<int>(row, "Quantity"),
+                Discount = sqlDbConnection.GetDataRowValue<decimal>(row, "Discount"),
+                Subtotal = sqlDbConnection.GetDataRowValue<decimal>(row, "SubTotal"),
+                Total = sqlDbConnection.GetDataRowValue<decimal>(row, "Total"),
+                CreatedAt = sqlDbConnection.GetDataRowValue<DateTime>(row, "CreatedAt"),
+                CreatedBy = sqlDbConnection.GetDataRowValue<Guid>(row, "CreatedBy")
+            };
+
+            return invoiceDetail;
         }
     }
 }
