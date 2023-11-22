@@ -28,45 +28,69 @@ namespace Domain.Endpoint.Services
             Invoice newInvoice = Clone(invoice);
             ICollection<InvoiceDetail> tempDetails = Clone(newInvoice.InvoiceDetails);
             newInvoice.ClearDetail();
+            List<ProductDetail> productDetails = new List<ProductDetail>();
 
+            // Recorrer los detalles de la factura
             foreach (InvoiceDetail detail in tempDetails)
             {
-                // Obtener el producto...
-                // Validar la existencia...
-                BaseItem baseItem = await GetBaseItem(detail);
+                BaseItem baseItem;
+                switch (detail.ItemType)
+                {
+                    case BaseItem.SingleProduct:
+                        {
+                            // Obtener el producto y validar si existe
+                            ProductDetail productDetail = await GetProductDetail(detail);
+                            // Validar la cantidad de existencia
+                            if (productDetail.Quantity < detail.Quantity)
+                                throw new NotEnoughQuantityException(productDetail.Quantity, detail.Quantity);
+
+                            productDetail.Quantity -= detail.Quantity;
+                            // Agregar los productos a una lista temporar para posteriormente ser actualizados una vez creada la factura
+                            productDetails.Add(productDetail);
+                            baseItem = productDetail;
+                        }
+                        break;
+
+                    case BaseItem.Dish:
+                        baseItem = await GetDishFromInvoiceDetail(detail);
+                        break;
+
+                    default: throw new ItemTypeNotAllowedException(detail.ItemType);
+                }
+
                 newInvoice.AddDetail(baseItem, detail.Quantity, detail.Discount);
-                // Actualizar el producto - await productDetailsRepository.UpdateAsync();
             }
 
+            // Crear primero la factura...
             await invoicesRepository.CreateAsync(newInvoice);
+
+            // Actualizar los productos (existencias)
+            foreach (ProductDetail product in productDetails)
+            {
+                // Nota: Generar metodo que reciba multiples productos para hacer una operaciones por lote
+                // en lugar de hacerlo uno a uno, el rendimiento de la app sera mucho mejor
+                await productDetailsRepository.UpdateAsync(product);
+            }
+
             return newInvoice;
         }
 
-        public async Task<TItem> GetBaseItem<TItem>(InvoiceDetail detail) where TItem : BaseItem
+        private async Task<ProductDetail> GetProductDetail(InvoiceDetail detail)
         {
-            ICollection<string> items = new List<string> { BaseItem.Dish, BaseItem.SingleProduct };
-            if (!items.Contains(detail.ItemType)) throw new ItemTypeNotAllowedException(detail.ItemType);
+            Guid productId = detail.ProductDetailId ?? throw new Exception("Invalid Entity Exception");
+            ProductDetail productDetail = await productDetailsRepository.GetByIdAsync(productId);
+            if (productDetail is null) throw new EntityNotFoundException(productId);
 
-            if (detail.ItemType == BaseItem.SingleProduct)
-            {
-                Guid productId = detail.ProductDetailId ?? throw new Exception("Invalid Entity Exception");
+            return productDetail;
+        }
 
-                ProductDetail productDetail = await productDetailsRepository.GetByIdAsync(productId);
-                if (productDetail is null) throw new EntityNotFoundException(productId);
-
-                //if (productDetail.Quantity < detail.Quantity) throw new NotEnoughQuantityException(productDetail.Quantity, detail.Quantity);
-                //productDetail.Quantity -= detail.Quantity;
-                //await productDetailsRepository.UpdateAsync(productDetail);
-
-                return productDetail;
-            }
-
+        private async Task<Dish> GetDishFromInvoiceDetail(InvoiceDetail detail)
+        {
             Guid dishId = detail.DishId ?? throw new Exception("Invalid Entity Exception");
             Dish dish = await dishesRepository.GetByIdAsync(dishId);
             if (dish is null) throw new EntityNotFoundException(dishId);
 
-            BaseItem dishItem = dish.ToBaseItem();
-            return dishItem;
+            return dish;
         }
 
         public Task DeleteAsync(Invoice invoice)
