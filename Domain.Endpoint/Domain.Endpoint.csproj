@@ -59,6 +59,7 @@
     <Compile Include="Entities\ToDo.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\ItemTypeNotAllowedException.cs" />
+    <Compile Include="Exceptions\NotEnoughQuantityException.cs" />
     <Compile Include="Interfaces\Repositories\IDishesRepository.cs" />
     <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
     <Compile Include="Interfaces\Repositories\IInvoicesRepository.cs" />

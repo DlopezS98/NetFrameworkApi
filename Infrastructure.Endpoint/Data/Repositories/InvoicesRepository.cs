@@ -22,6 +22,7 @@ namespace Infrastructure.Endpoint.Data.Repositories
             SqlCommand invoiceCommand = operationBuilder.From(entity)
                 .WithOperation(SqlWriteOperation.Create)
                 .BuildWritter();
+
             List<SqlCommand> detailCommands = entity.InvoiceDetails.Select(invoiceDetail =>
             {
                 return operationBuilder.From(invoiceDetail)

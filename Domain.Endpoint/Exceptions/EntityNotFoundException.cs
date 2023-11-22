@@ -2,6 +2,7 @@
 
 namespace Domain.Endpoint.Exceptions
 {
+    [Serializable]
     public class EntityNotFoundException : Exception
     {
         public Guid Id { get; set; }

@@ -5,6 +5,11 @@ namespace Domain.Endpoint.Entities
 {
     public class ProductDetail : BaseItem
     {
+        public ProductDetail()
+        {
+            itemType = SingleProduct;
+        }
+
         public int LotNumber { get; set; }
         public Guid ProductId { get; set; }
         //public decimal Price { get; set; }

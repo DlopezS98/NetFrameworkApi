@@ -10,7 +10,7 @@ namespace Domain.Endpoint.Entities
 
         public decimal Price { get; set; }
 
-        private string itemType = string.Empty;
+        protected string itemType = string.Empty;
 
         public virtual string GetItemType()
         {
@@ -23,6 +23,11 @@ namespace Domain.Endpoint.Entities
             if (!items.Contains(value)) throw new ItemTypeNotAllowedException(value);
 
             itemType = value;
+        }
+
+        public virtual BaseItem ToBaseItem()
+        {
+            return this;
         }
     }
 }
